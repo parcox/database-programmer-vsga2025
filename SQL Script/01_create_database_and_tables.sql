@@ -48,10 +48,8 @@ CREATE TABLE koleksi_buku (
     kode_kategori CHAR(5) NOT NULL
         COMMENT 'Foreign key ke kategori_buku',
     jumlah_eksemplar INT NOT NULL DEFAULT 1
-        CHECK (jumlah_eksemplar >= 0)
         COMMENT 'Total buku yang dimiliki',
     tersedia INT NOT NULL DEFAULT 1
-        CHECK (tersedia >= 0)
         COMMENT 'Jumlah buku yang tersedia (belum dipinjam)',
     isbn VARCHAR(20) UNIQUE
         COMMENT 'Nomor ISBN (International Standard Book Number)',
@@ -63,8 +61,10 @@ CREATE TABLE koleksi_buku (
         ON UPDATE CASCADE
         ON DELETE RESTRICT,
 
-    -- Check constraint tambahan: tersedia tidak boleh > jumlah_eksemplar
-    CONSTRAINT chk_tersedia CHECK (tersedia <= jumlah_eksemplar)
+    -- Check constraints
+    CONSTRAINT chk_jumlah_eksemplar CHECK (jumlah_eksemplar >= 0),
+    CONSTRAINT chk_tersedia_positif CHECK (tersedia >= 0),
+    CONSTRAINT chk_tersedia_max CHECK (tersedia <= jumlah_eksemplar)
 ) ENGINE=InnoDB COMMENT='Master koleksi buku perpustakaan';
 
 -- ============================================
@@ -136,7 +136,6 @@ CREATE TABLE peminjaman (
     status_pinjam ENUM('dipinjam','dikembalikan') NOT NULL DEFAULT 'dipinjam'
         COMMENT 'Status peminjaman',
     denda DECIMAL(10,2) NOT NULL DEFAULT 0
-        CHECK (denda >= 0)
         COMMENT 'Total denda keterlambatan',
     catatan TEXT
         COMMENT 'Catatan tambahan (optional)',
@@ -149,7 +148,10 @@ CREATE TABLE peminjaman (
         ON DELETE RESTRICT,
     FOREIGN KEY (id_petugas) REFERENCES petugas(id_petugas)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT
+        ON DELETE RESTRICT,
+
+    -- Check constraint
+    CONSTRAINT chk_denda CHECK (denda >= 0)
 ) ENGINE=InnoDB COMMENT='Master transaksi peminjaman';
 
 -- ============================================
@@ -169,7 +171,6 @@ CREATE TABLE detail_peminjaman (
     kondisi_kembali ENUM('Baik','Rusak Ringan','Rusak Berat')
         COMMENT 'Kondisi buku saat dikembalikan (NULL jika belum kembali)',
     denda_kerusakan DECIMAL(10,2) DEFAULT 0
-        CHECK (denda_kerusakan >= 0)
         COMMENT 'Denda jika ada kerusakan',
 
     -- Foreign Key Constraints
@@ -178,7 +179,10 @@ CREATE TABLE detail_peminjaman (
         ON DELETE CASCADE,  -- Jika peminjaman dihapus, detail ikut terhapus
     FOREIGN KEY (kode_buku) REFERENCES koleksi_buku(kode_buku)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT  -- Buku tidak boleh dihapus jika masih ada di detail
+        ON DELETE RESTRICT,  -- Buku tidak boleh dihapus jika masih ada di detail
+
+    -- Check constraint
+    CONSTRAINT chk_denda_kerusakan CHECK (denda_kerusakan >= 0)
 ) ENGINE=InnoDB COMMENT='Detail buku yang dipinjam';
 
 -- ============================================
