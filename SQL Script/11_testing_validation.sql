@@ -149,10 +149,21 @@ FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
 WHERE TABLE_SCHEMA = 'perpustakaan_sekolah'
     AND REFERENCED_TABLE_NAME IS NOT NULL;
 
--- Lihat index yang ada
-SHOW INDEX FROM koleksi_buku;
-SHOW INDEX FROM peminjaman;
-SHOW INDEX FROM detail_peminjaman;
+-- Lihat index yang ada (gunakan nama database lengkap)
+SHOW INDEX FROM perpustakaan_sekolah.koleksi_buku;
+SHOW INDEX FROM perpustakaan_sekolah.peminjaman;
+SHOW INDEX FROM perpustakaan_sekolah.detail_peminjaman;
+
+-- Atau gunakan query dari information_schema
+SELECT
+    TABLE_NAME,
+    INDEX_NAME,
+    COLUMN_NAME,
+    NON_UNIQUE,
+    SEQ_IN_INDEX
+FROM INFORMATION_SCHEMA.STATISTICS
+WHERE TABLE_SCHEMA = 'perpustakaan_sekolah'
+ORDER BY TABLE_NAME, INDEX_NAME, SEQ_IN_INDEX;
 
 -- Cek stored procedures
 SHOW PROCEDURE STATUS WHERE Db = 'perpustakaan_sekolah';
