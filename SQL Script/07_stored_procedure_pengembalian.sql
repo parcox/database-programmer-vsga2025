@@ -116,6 +116,16 @@ END$$
 DELIMITER ;
 
 -- ============================================
+-- VERIFIKASI STORED PROCEDURE
+-- ============================================
+
+-- Lihat daftar stored procedures
+SHOW PROCEDURE STATUS WHERE db = 'perpustakaan_sekolah';
+
+-- Lihat detail definisi procedure
+SHOW CREATE PROCEDURE proses_pengembalian;
+
+-- ============================================
 -- CARA MENGGUNAKAN STORED PROCEDURE
 -- ============================================
 
