@@ -44,8 +44,8 @@ BEGIN
         AND p.status_pinjam = 'dipinjam';
 
     IF v_detail_exists = 0 THEN
-        SIGNAL SQLSTATE '45000';
-        SET MESSAGE_TEXT = 'Error: Data peminjaman tidak ditemukan atau sudah dikembalikan!';
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Error: Data peminjaman tidak ditemukan atau sudah dikembalikan!';
     END IF;
 
     -- ============================================

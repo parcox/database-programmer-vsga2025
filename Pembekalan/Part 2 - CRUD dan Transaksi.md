@@ -495,8 +495,8 @@ BEGIN
         WHERE kode_pinjam = p_kode_pinjam;
 
         IF v_jumlah_buku_transaksi >= 2 THEN
-            SIGNAL SQLSTATE '45000';
-            SET MESSAGE_TEXT = 'Error: Maksimal 2 buku per transaksi!';
+            SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Error: Maksimal 2 buku per transaksi!';
         END IF;
 
         -- Cek apakah buku sudah dipinjam di transaksi ini
@@ -504,8 +504,8 @@ BEGIN
             SELECT 1 FROM detail_peminjaman
             WHERE kode_pinjam = p_kode_pinjam AND kode_buku = p_kode_buku
         ) THEN
-            SIGNAL SQLSTATE '45000';
-            SET MESSAGE_TEXT = 'Error: Buku ini sudah ada dalam transaksi!';
+            SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Error: Buku ini sudah ada dalam transaksi!';
         END IF;
     END IF;
 
@@ -604,8 +604,8 @@ BEGIN
         AND p.status_pinjam = 'dipinjam';
 
     IF v_detail_exists = 0 THEN
-        SIGNAL SQLSTATE '45000';
-        SET MESSAGE_TEXT = 'Error: Data peminjaman tidak ditemukan atau sudah dikembalikan!';
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Error: Data peminjaman tidak ditemukan atau sudah dikembalikan!';
     END IF;
 
     -- ============================================
