@@ -168,6 +168,6 @@ ORDER BY TABLE_NAME, INDEX_NAME, SEQ_IN_INDEX;
 -- Cek stored procedures
 SHOW PROCEDURE STATUS WHERE Db = 'perpustakaan_sekolah';
 
--- Lihat definisi stored procedure
-SHOW CREATE PROCEDURE proses_peminjaman;
-SHOW CREATE PROCEDURE proses_pengembalian;
+-- Lihat definisi stored procedure (gunakan nama database lengkap)
+SHOW CREATE PROCEDURE perpustakaan_sekolah.proses_peminjaman;
+SHOW CREATE PROCEDURE perpustakaan_sekolah.proses_pengembalian;
